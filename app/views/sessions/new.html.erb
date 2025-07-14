@@ -1,0 +1,16 @@
+<%= form_with url: login_path, local: true, data: { turbo: false } do %>
+    <div>
+      <%= label_tag :email %>
+      <%= text_field_tag :email %>
+    </div>
+  
+    <div>
+      <%= label_tag :password %>
+      <%= password_field_tag :password %>
+    </div>
+  
+    <div>
+      <%= submit_tag "Se connecter" %>
+    </div>
+  <% end %>
+  

@@ -1,6 +1,58 @@
-<div class="container">
-  <h2><%= @gossip.title %></h2>
+<div class="container mt-4">
+  <h1><%= @gossip.title %></h1>
   <p><%= @gossip.content %></p>
-  <p>Auteur : <%= link_to @gossip.user.first_name, user_path(@gossip.user) %></p>
-  <p>Date : <%= @gossip.created_at.strftime('%d %B %Y') %></p>
+  <p><strong>Auteur :</strong> <%= link_to @gossip.user.first_name, user_path(@gossip.user) %></p>
+
+  <% if @gossip.tags.any? %>
+    <p><strong>Tags :</strong>
+      <% @gossip.tags.each do |tag| %>
+        <span class="badge bg-secondary"><%= tag.title %></span>
+      <% end %>
+    </p>
+  <% end %>
+
+  <hr>
+
+  <!-- Likes du potin -->
+  <div class="mb-3">
+    <% if logged_in? %>
+      <% if @gossip.likes.exists?(user: current_user) %>
+        <%= button_to "Retirer Like (#{@gossip.likes.count})", gossip_like_path(@gossip), method: :delete, class: "btn btn-sm btn-danger" %>
+      <% else %>
+        <%= button_to "Liker (#{@gossip.likes.count})", gossip_like_path(@gossip), method: :post, class: "btn btn-sm btn-primary" %>
+      <% end %>
+    <% else %>
+      <p>Connecte-toi pour liker ce potin.</p>
+    <% end %>
+  </div>
+
+  <!-- Bouton supprimer ce potin (seulement pour l’auteur) -->
+  <% if current_user == @gossip.user %>
+    <%= link_to "Modifier ce potin", edit_gossip_path(@gossip), class: "btn btn-warning" %>
+    <%= button_to "Supprimer ce potin", gossip_path(@gossip), method: :delete, data: { confirm: "Voulez-vous vraiment supprimer ce potin ?" }, class: "btn btn-danger ms-2" %>
+  <% end %>
+
+  <hr>
+
+  <h3>Commentaires :</h3>
+  <% @gossip.comments.each do |comment| %>
+    <div class="mb-2 border rounded p-2">
+      <p><strong><%= comment.user.first_name %> :</strong> <%= comment.content %></p>
+      <% if current_user == comment.user %>
+        <%= link_to "Modifier", edit_gossip_comment_path(@gossip, comment), class: "btn btn-sm btn-outline-secondary" %>
+        <%= button_to "Supprimer", gossip_comment_path(@gossip, comment), method: :delete, data: { confirm: "Supprimer ce commentaire ?" }, class: "btn btn-sm btn-outline-danger ms-1" %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= render 'comments/form', gossip: @gossip, comment: Comment.new %>
 </div>
+
+
+
+
+
+
+
+
+

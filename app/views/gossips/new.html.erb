@@ -1,0 +1,41 @@
+<h1>Créer un nouveau potin</h1>
+
+<%= render 'form', gossip: @gossip %>
+
+<%= form_with model: @gossip, local: true do |form| %>
+  <% if @gossip.errors.any? %>
+    <div class="alert alert-danger">
+      <h4>Veuillez corriger les erreurs suivantes :</h4>
+      <ul>
+        <% @gossip.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :title, class: "form-label" %>
+    <%= form.text_field :title, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :content, class: "form-label" %>
+    <%= form.text_area :content, class: "form-control", rows: 5 %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :tag_list, "Tags (séparés par des virgules)", class: "form-label" %>
+    <%= form.text_field :tag_list, class: "form-control" %>
+  </div>
+
+  <div>
+    <%= form.submit "Publier", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+
+
+
+
+

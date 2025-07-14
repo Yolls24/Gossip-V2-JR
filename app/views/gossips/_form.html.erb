@@ -1,0 +1,22 @@
+<%= form_with(model: gossip, local: true) do |form| %>
+    <div class="mb-3">
+      <%= form.label :title, "Titre" %>
+      <%= form.text_field :title, class: "form-control" %>
+    </div>
+  
+    <div class="mb-3">
+      <%= form.label :content, "Contenu" %>
+      <%= form.text_area :content, class: "form-control", rows: 5 %>
+    </div>
+  
+    <div class="mb-3">
+      <%= form.label :tag_list, "Tags (séparés par des virgules)" %>
+      <%= text_field_tag :tag_list, gossip.tags.map(&:title).join(", "), class: "form-control" %>
+    </div>
+  
+    <%= form.submit class: "btn btn-primary" %>
+  <% end %>
+  
+  
+  
+  

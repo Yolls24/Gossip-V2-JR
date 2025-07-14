@@ -1,0 +1,22 @@
+<%= form_with model: @user, local: true do |form| %>
+  <%= form.label :first_name %>
+  <%= form.text_field :first_name %>
+
+  <%= form.label :email %>
+  <%= form.email_field :email %>
+
+  <%= form.label :password %>
+  <%= form.password_field :password %>
+
+  <%= form.label :password_confirmation %>
+  <%= form.password_field :password_confirmation %>
+
+  <%= form.label :city_id %>
+  <%= form.collection_select :city_id, City.all, :id, :name %>
+
+  <%= form.submit "S'inscrire" %>
+<% end %>
+
+
+
+

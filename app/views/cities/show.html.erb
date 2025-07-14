@@ -1,0 +1,32 @@
+<div class="container">
+  <h1>Ville de <%= @city.name %></h1>
+
+  <hr>
+  <h3>Habitants :</h3>
+  <% if @city.users.any? %>
+    <ul class="list-group mb-4">
+      <% @city.users.each do |user| %>
+        <li class="list-group-item">
+          <%= link_to "#{user.first_name} #{user.last_name}", user_path(user) %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>Aucun utilisateur dans cette ville.</p>
+  <% end %>
+
+  <h3>Potins publiés :</h3>
+  <% gossips = @city.users.map(&:gossips).flatten %>
+  <% if gossips.any? %>
+    <ul class="list-group">
+      <% gossips.each do |gossip| %>
+        <li class="list-group-item">
+          <strong><%= link_to gossip.title, gossip_path(gossip) %></strong> —
+          par <%= link_to gossip.user.first_name, user_path(gossip.user) %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>Aucun potin publié depuis cette ville.</p>
+  <% end %>
+</div>

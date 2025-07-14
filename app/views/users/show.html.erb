@@ -1,6 +1,22 @@
 <div class="container">
   <h1>Profil de <%= @user.first_name %> <%= @user.last_name %></h1>
+  <p>Description : <%= @user.description %></p>
   <p>Age : <%= @user.age %></p>
   <p>Email : <%= @user.email %></p>
-  <p>Ville : <%= @user.city %></p>
+  <p>Ville : <%= link_to @user.city.name, city_path(@user.city) %></p>
+
+  <hr>
+  <h3>Potins publiés :</h3>
+  <% if @user.gossips.any? %>
+    <ul class="list-group">
+      <% @user.gossips.each do |gossip| %>
+        <li class="list-group-item">
+          <%= link_to gossip.title, gossip_path(gossip) %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>Ce moussaillon n'a pas encore publié de potin.</p>
+  <% end %>
 </div>
+

@@ -1,0 +1,16 @@
+<!-- app/views/comments/edit.html.erb -->
+<div class="container mt-4">
+  <h2>Modifier le commentaire</h2>
+
+  <%= form_with(model: [@gossip, @comment], local: true) do |form| %>
+    <div class="form-group mb-3">
+      <%= form.label :content, "Contenu du commentaire" %>
+      <%= form.text_area :content, class: "form-control", rows: 4 %>
+    </div>
+
+    <%= form.submit "Mettre à jour", class: "btn btn-primary" %>
+  <% end %>
+
+  <br>
+  <%= link_to "Retour au potin", gossip_path(@gossip), class: "btn btn-secondary" %>
+</div>

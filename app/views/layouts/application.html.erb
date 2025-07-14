@@ -1,42 +1,87 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "The Gossip Project" %></title>
+    <title><%= content_for?(:title) ? yield(:title) : "The Gossip Project" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   </head>
 
   <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-  <div class="container">
-    <a class="navbar-brand" href="/">The Gossip Project</a>
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><%= link_to "Accueil", root_path, class: "nav-link" %></li>
-        <li class="nav-item"><%= link_to "Team", team_path, class: "nav-link" %></li>
-        <li class="nav-item"><%= link_to "Contact", contact_path, class: "nav-link" %></li>
-      </ul>
-    </div>
-  </div>
-</nav>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+      <div class="container">
+        <a class="navbar-brand" href="<%= root_path %>">The Gossip Project</a>
 
-    <%= yield %>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto">
+
+            <li class="nav-item"><%= link_to "Accueil", root_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Team", team_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Contact", contact_path, class: "nav-link" %></li>
+
+            <% if current_user %>
+              <li class="nav-item"><%= link_to "Nouveau potin", new_gossip_path, class: "nav-link" %></li>
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Bonjour, <%= current_user.first_name %>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                  <li>
+                    <%= link_to "Déconnexion", logout_path, method: :delete, class: "dropdown-item", data: { confirm: "Voulez-vous vraiment vous déconnecter ?", turbo: false } %>
+                  </li>
+                </ul>
+              </li>
+            <% else %>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="authDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-turbo="false">
+                  S'inscrire / Se connecter
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="authDropdown">
+                  <li><%= link_to "S'inscrire", new_user_path, class: "dropdown-item", data: { turbo: false } %></li>
+                  <li><%= link_to "Se connecter", login_path, class: "dropdown-item", data: { turbo: false } %></li>
+                </ul>
+              </li>
+            <% end %>
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <% if flash[:success] %>
+        <div class="alert alert-success text-center"><%= flash[:success] %></div>
+      <% elsif flash[:error] %>
+        <div class="alert alert-danger text-center"><%= flash[:error] %></div>
+      <% elsif flash[:alert] %>
+        <div class="alert alert-warning text-center"><%= flash[:alert] %></div>
+      <% end %>
+
+      <%= yield %>
+    </div>
+
+    <!-- Bootstrap JS (avec Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
   </body>
 </html>
+
+
+
+

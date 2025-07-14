@@ -1,0 +1,15 @@
+<div class="container mt-4">
+  <h2>Commentaire de <%= @comment.user.first_name %></h2>
+
+  <p><strong>Potin :</strong> <%= link_to @gossip.title, gossip_path(@gossip) %></p>
+  <p><strong>Commentaire :</strong></p>
+  <p><%= @comment.content %></p>
+  
+  <p><small>Posté le <%= @comment.created_at.strftime('%d %B %Y à %H:%M') %></small></p>
+
+  <%= link_to "Modifier ce commentaire", edit_gossip_comment_path(@gossip, @comment), class: "btn btn-warning me-2" %>
+
+  <%= button_to "Supprimer ce commentaire", gossip_comment_path(@gossip, @comment), method: :delete, data: { confirm: "Es-tu sûr de vouloir supprimer ce commentaire ?" }, class: "btn btn-danger me-2" %>
+
+  <%= link_to "Retour au potin", gossip_path(@gossip), class: "btn btn-secondary" %>
+</div>

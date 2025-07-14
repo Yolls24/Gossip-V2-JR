@@ -1,10 +1,33 @@
 Rails.application.routes.draw do
-  root 'static_pages#home'
+  root "gossips#index"
+
+  resources :users, only: [:show, :new, :create]
+
+  resources :gossips do
+    resources :comments, only: [:create, :destroy, :edit, :update, :show] do
+      resource :like, only: [:create, :destroy]
+    end
+    resource :like, only: [:create, :destroy]
+  end
+
+  resources :cities, only: [:show]
+  resources :tags, only: [:show]
+
   get '/team', to: 'static_pages#team'
   get '/contact', to: 'static_pages#contact'
   get '/welcome/:first_name', to: 'static_pages#welcome', as: 'welcome'
-  resources :gossips, only: [:show]
-  resources :users, only: [:show]
+
+  get '/login', to: 'sessions#new'
+  post '/login', to: 'sessions#create'
+  get '/logout', to: 'sessions#destroy'
 end
+
+
+
+
+
+
+
+
 
 

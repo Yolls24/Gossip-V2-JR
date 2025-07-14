@@ -1,8 +1,11 @@
 source "https://rubygems.org"
 
+ruby "3.4.2"
+
 gem "table_print"
 
 gem "faker"
+gem 'bcrypt', '~> 3.1.7'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0.2"
