@@ -1,0 +1,21 @@
+<h1>Vos conversations</h1>
+
+<% @conversations.each do |conv| %>
+  <% other_user = conv.sender == current_user ? conv.recipient : conv.sender %>
+  <div class="card my-2">
+    <div class="card-body">
+      <h5 class="card-title"><%= link_to other_user.full_name, conversation_path(conv) %></h5>
+    </div>
+  </div>
+<% end %>
+
+<h3>Démarrer une nouvelle conversation</h3>
+<%= form_with url: conversations_path, method: :post do %>
+  <div class="form-group">
+    <%= label_tag :recipient_id, "Sélectionner un utilisateur" %>
+    <%= select_tag :recipient_id, options_from_collection_for_select(User.where.not(id: current_user.id), :id, :full_name), class: "form-control" %>
+  </div>
+  <%= submit_tag "Créer", class: "btn btn-primary mt-2" %>
+<% end %>
+
+

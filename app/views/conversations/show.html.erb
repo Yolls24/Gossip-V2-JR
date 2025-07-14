@@ -1,0 +1,19 @@
+<h2>Conversation avec <%= @conversation.sender == current_user ? @conversation.recipient.full_name : @conversation.sender.full_name %></h2>
+
+<div id="messages">
+  <% @messages.each do |msg| %>
+    <div class="mb-2 <%= msg.user == current_user ? 'text-end' : 'text-start' %>">
+      <span class="badge <%= msg.user == current_user ? 'bg-primary' : 'bg-secondary' %>">
+        <%= msg.user.full_name %> : <%= msg.content %>
+      </span>
+    </div>
+  <% end %>
+</div>
+
+<%= form_with model: [@conversation, @message], local: false do |f| %>
+  <div class="form-group mt-4">
+    <%= f.text_area :content, class: "form-control", placeholder: "Votre message..." %>
+  </div>
+  <%= f.submit "Envoyer", class: "btn btn-success mt-2" %>
+<% end %>
+

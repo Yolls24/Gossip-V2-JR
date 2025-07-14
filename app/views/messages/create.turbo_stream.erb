@@ -1,0 +1,9 @@
+<turbo-stream action="append" target="messages">
+  <template>
+    <div class="mb-2 <%= @message.user == current_user ? 'text-end' : 'text-start' %>">
+      <span class="badge <%= @message.user == current_user ? 'bg-primary' : 'bg-secondary' %>">
+        <%= @message.user.username %> : <%= @message.body %>
+      </span>
+    </div>
+  </template>
+</turbo-stream>
