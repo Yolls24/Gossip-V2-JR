@@ -13,11 +13,18 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true
   validates :password, length: { minimum: 6 }, allow_nil: true
 
-  # Ajoute cette méthode
+  # Méthode utilitaire pour afficher le nom complet
   def full_name
     "#{first_name} #{last_name}"
   end
+
+  # Méthode pour stocker le remember_digest à partir d’un token
+  def remember(remember_token)
+    remember_digest = BCrypt::Password.create(remember_token)
+    self.update(remember_digest: remember_digest)
+  end
 end
+
 
 
 
