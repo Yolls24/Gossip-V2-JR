@@ -14,8 +14,14 @@
   <%= form.label :city_id %>
   <%= form.collection_select :city_id, City.all, :id, :name %>
 
+  <div>
+    <%= check_box_tag :remember_me, "1" %>
+    <%= label_tag :remember_me, "Se souvenir de moi" %>
+  </div>
+
   <%= form.submit "S'inscrire" %>
 <% end %>
+
 
 
 

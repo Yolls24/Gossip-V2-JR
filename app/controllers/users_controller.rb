@@ -1,5 +1,6 @@
-# app/controllers/users_controller.rb
 class UsersController < ApplicationController
+  include SessionsHelper  # Ajout pour accéder à remember()
+
   def show
     @user = User.find(params[:id])
   rescue ActiveRecord::RecordNotFound
@@ -15,6 +16,10 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       session[:user_id] = @user.id
+
+      # Si l'utilisateur a coché "Se souvenir de moi", on crée les cookies
+      remember(@user) if params[:remember_me] == "1"
+
       redirect_to root_path, notice: "Bienvenue #{@user.first_name} !"
     else
       Rails.logger.info @user.errors.full_messages.join(", ")
@@ -28,6 +33,7 @@ class UsersController < ApplicationController
     params.require(:user).permit(:first_name, :last_name, :description, :email, :password, :password_confirmation, :city_id)
   end
 end
+
 
 
 
